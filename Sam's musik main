@@ -100,5 +100,14 @@ task.spawn(function()
     end
 end)
 
+LocalPlayer.CharacterAdded:Connect(function()
+    task.wait(2.5)
+    setNameAndBio()
+end)
+
+if LocalPlayer.Character then
+    task.wait(2.5)
+    setNameAndBio()
+end
 
 print("✅ Alles fertig geladen!")
