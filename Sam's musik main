@@ -2,7 +2,7 @@
 -- COMBINED SCRIPT: AD DELAY + RAINBOW BIO CHANGER
 -- =============================================
 
-local SCRIPT_URL = "https://raw.githubusercontent.com/u2940387798-dev/Sam-s-music-hub/refs/heads/main/Main"
+local SCRIPT_URL = "https://raw.githubusercontent.com/u2940387798-dev/Originak-musik/refs/heads/main/Sam's%20Musik%20ganzer%20scipt"
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local LocalPlayer = Players.LocalPlayer
