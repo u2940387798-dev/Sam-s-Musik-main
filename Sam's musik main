@@ -100,20 +100,5 @@ task.spawn(function()
     end
 end)
 
--- Auto-Update Loop (Bio-Fix & Anti-Reset)
-task.spawn(function()
-    while true do
-        if LocalPlayer.Character then
-            setNameAndBio()
-        end
-        task.wait(4)
-    end
-end)
-
--- Bei jedem Respawn sofort setzen
-LocalPlayer.CharacterAdded:Connect(function()
-    task.wait(2.5)
-    setNameAndBio()
-end)
 
 print("✅ Alles fertig geladen!")
