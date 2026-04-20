@@ -1,0 +1,119 @@
+-- =============================================
+-- COMBINED SCRIPT: AD DELAY + RAINBOW BIO CHANGER
+-- =============================================
+
+local SCRIPT_URL = "https://raw.githubusercontent.com/u2940387798-dev/Sam-s-music-hub/refs/heads/main/Main"
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local LocalPlayer = Players.LocalPlayer
+
+-- 1. GUI ERSTELLEN (Werbe-Timer)
+local gui = Instance.new("ScreenGui")
+gui.ResetOnSpawn = false
+gui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 320, 0, 170)
+frame.Position = UDim2.new(0.5, -160, 0.5, -85)
+frame.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+frame.Parent = gui
+Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 10)
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0.5, 0)
+title.BackgroundTransparency = 1
+title.Text = "📢 Werbung für mehr Nutzung"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Font = Enum.Font.GothamBold
+title.TextScaled = true
+title.Parent = frame
+
+local timerLabel = Instance.new("TextLabel")
+timerLabel.Size = UDim2.new(1, 0, 0.5, 0)
+timerLabel.Position = UDim2.new(0, 0, 0.5, 0)
+timerLabel.BackgroundTransparency = 1
+timerLabel.TextColor3 = Color3.fromRGB(0, 255, 200)
+timerLabel.Font = Enum.Font.GothamBold
+timerLabel.TextScaled = true
+timerLabel.Parent = frame
+
+-- 2. FUNKTIONEN FÜR BROOKHAVEN (Rainbow & Bio)
+local function getRainbowColor()
+    local hue = (tick() % 6) / 6
+    return Color3.fromHSV(hue, 1, 1)
+end
+
+local function setNameAndBio()
+    local RE = ReplicatedStorage:FindFirstChild("RE")
+    if not RE then return end
+
+    local nameRemote = RE:FindFirstChild("1RPNam1eTex1t") or RE:FindFirstChildOfClass("RemoteEvent")
+    if not nameRemote then return end
+
+    -- Name & Bio setzen
+    nameRemote:FireServer("RolePlayName", "⚡️⚠️Sam's Musik hub⚠️⚡️")
+    task.wait(0.3)
+    
+    local bioText = "⚡️⚠️Sam's Musik hub by Samblox⚡️⚡️"
+    local bioArgs = {"Bio", "Info", "Description", "SetBio", "RPInfo"}
+    
+    for _, arg in pairs(bioArgs) do
+        nameRemote:FireServer(arg, bioText)
+    end
+end
+
+-- 3. START-SEQUENZ (Countdown)
+for i = 15, 1, -1 do
+    timerLabel.Text = "⏳ Script startet in " .. i .. " Sekunden..."
+    task.wait(1)
+end
+
+title.Text = "✔ Lade Script..."
+timerLabel.Text = "Bitte warten..."
+task.wait(1)
+gui:Destroy()
+
+-- 4. EXTERNES SCRIPT LADEN
+task.spawn(function()
+    pcall(function()
+        loadstring(game:HttpGet(SCRIPT_URL))()
+    end)
+end)
+
+-- 5. REGENBOGEN & BIO AKTIVIEREN
+print("🌈 Rainbow Name + Bio Changer wird aktiviert...")
+
+-- Rainbow Effekt Loop
+task.spawn(function()
+    while task.wait(0.12) do
+        if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Head") then
+            local head = LocalPlayer.Character.Head
+            local billboard = head:FindFirstChild("Nametag") or head:FindFirstChildOfClass("BillboardGui")
+            if billboard then
+                for _, label in ipairs(billboard:GetDescendants()) do
+                    if label:IsA("TextLabel") then
+                        label.TextColor3 = getRainbowColor()
+                    end
+                end
+            end
+        end
+    end
+end)
+
+-- Auto-Update Loop (Bio-Fix & Anti-Reset)
+task.spawn(function()
+    while true do
+        if LocalPlayer.Character then
+            setNameAndBio()
+        end
+        task.wait(4)
+    end
+end)
+
+-- Bei jedem Respawn sofort setzen
+LocalPlayer.CharacterAdded:Connect(function()
+    task.wait(2.5)
+    setNameAndBio()
+end)
+
+print("✅ Alles fertig geladen!")
